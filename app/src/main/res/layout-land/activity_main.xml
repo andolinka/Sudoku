@@ -1,0 +1,48 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:orientation="horizontal"
+    android:background="@color/tlo"
+    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <TextView
+            android:text="@string/hello_world"
+            android:textColor="@color/main_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="25dp"
+            android:textSize="24.5sp"/>
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:stretchColumns="*">
+            <TableRow>
+                <Button
+                    android:text="@string/Kontynuuj"
+                    android:id="@+id/main_kontynuacja" />
+                <Button
+                    android:text="@string/NowaGra"
+                    android:id="@+id/main_nowa_gra" />
+            </TableRow>
+            <TableRow>
+                <Button
+                    android:text="@string/Informacje"
+                    android:id="@+id/main_informacje" />
+                <Button
+                    android:text="@string/Wyjscie"
+                    android:id="@+id/main_wyjscie" />
+
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</LinearLayout>
