@@ -1,6 +1,8 @@
 package com.example.ewelina.sudoku;
 
 import android.graphics.Point;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -18,11 +20,38 @@ import android.graphics.Paint.Style;
 public class WidokPuzzle extends View{
     private static final String ZNACZNIK = "Sudoku";
     private final NowaGra gra;
+
+    private static final String WYBX = "wybx";
+    private static final String ZOBACZ_STAM = "zobaczStan";
+    private static final String WYBY = "wyby";
+    private static final int ID = 42;
+
     public WidokPuzzle(Context kontekst){
         super(kontekst);
         this.gra = (NowaGra) kontekst;
         setFocusable(true);
         setFocusableInTouchMode(true);
+        setId(ID);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState(){
+        Parcelable p = super.onSaveInstanceState();
+        Log.d(ZNACZNIK, "onSaveInstanceState");
+        Bundle zestaw = new Bundle();
+        zestaw.putInt(WYBX, wybX);
+        zestaw.putInt(WYBY, wybY);
+        zestaw.putParcelable(ZOBACZ_STAM, p);
+        return zestaw;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable stan){
+        Log.d(ZNACZNIK, "onRestoreInstanceState");
+        Bundle zestaw = (Bundle) stan;
+        wybierz(zestaw.getInt(WYBX), zestaw.getInt(WYBY));
+        super.onRestoreInstanceState(zestaw.getParcelable(ZOBACZ_STAM));
+        return;
     }
 
     private float wysokosc;
@@ -101,23 +130,25 @@ public class WidokPuzzle extends View{
         }
 
         //rysuj podpowiedzi
-        //wybierz kolor podpowiedzi w zaleznosci od liczby dostepnych ruchow
-        Paint podpowiedz = new Paint();
-        int c[] = {getResources().getColor(R.color.puzzle_podpowiedz_0),
-                getResources().getColor(R.color.puzzle_podpowiedz_1),
-                getResources().getColor(R.color.puzzle_podpowiedz_2),};
-        Rect r = new Rect();
-        for (int i = 0; i < 9; i++){
-            for (int j = 0; j < 9; j++){
-                int pozostaleruchy = 9 - gra.wezUzytePola(i,j).length;
-                if (pozostaleruchy < c.length){
-                    wezProst(i, j, r);
-                    podpowiedz.setColor(c[pozostaleruchy]);
-                    plotno.drawRect(r, podpowiedz);
+
+        if (Preferencje.wezPodpowiedz(getContext())) {
+            //wybierz kolor podpowiedzi w zaleznosci od liczby dostepnych ruchow
+            Paint podpowiedz = new Paint();
+            int c[] = {getResources().getColor(R.color.puzzle_podpowiedz_0),
+                    getResources().getColor(R.color.puzzle_podpowiedz_1),
+                    getResources().getColor(R.color.puzzle_podpowiedz_2),};
+            Rect r = new Rect();
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    int pozostaleruchy = 9 - gra.wezUzytePola(i, j).length;
+                    if (pozostaleruchy < c.length) {
+                        wezProst(i, j, r);
+                        podpowiedz.setColor(c[pozostaleruchy]);
+                        plotno.drawRect(r, podpowiedz);
+                    }
                 }
             }
         }
-
         //rysuj wybrana wartosc
 
         //rysuj zaznaczenie

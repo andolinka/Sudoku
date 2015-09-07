@@ -64,8 +64,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 startActivity(i);
                 break;
             case R.id.main_kontynuacja:
-                Intent j = new Intent(this, Kontynuuj.class);
-                startActivity(j);
+                uruchomGre(NowaGra.trudnosc_kontynuacji);
                 break;
             case R.id.main_nowa_gra:
                 otworzDialogGra();
@@ -93,4 +92,16 @@ public class MainActivity extends Activity implements OnClickListener {
         intencja.putExtra(NowaGra.TRUDNOSC_KLUCZ, i);
         startActivity(intencja);
     }
+
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//        Muzyka.play(this, R.raw.main);
+//    }
+//
+//    @Override
+//    protected void onPause(){
+//        super.onPause();
+//        Muzyka.stop(this);
+//    }
 }

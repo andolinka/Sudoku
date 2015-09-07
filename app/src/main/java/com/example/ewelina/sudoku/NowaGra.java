@@ -35,6 +35,9 @@ public class NowaGra extends Activity {
         widokPuzzle = new WidokPuzzle(this);
         setContentView(widokPuzzle);
         widokPuzzle.requestFocus();
+
+        //jezeli aktywnosc zostanie zrestartowana, przy nastepnym uruchomieniu gra bedzie kontynuowana
+        getIntent().putExtra(TRUDNOSC_KLUCZ, trudnosc_kontynuacji);
     }
 
     protected void pokazKlawiatureLubBlad(int x, int y){
@@ -138,6 +141,9 @@ public class NowaGra extends Activity {
         String puz;
         //TODO: kontynuacja bieżacej gry
         switch (trud){
+            case trudnosc_kontynuacji:
+                puz = getPreferences(MODE_PRIVATE).getString(pref_puzzle, puzzleLatwe);
+                break;
             case TRUDNOSC_TRUDNY:
                 puz = puzzleTrudne;
                 break;
@@ -182,5 +188,29 @@ public class NowaGra extends Activity {
             return "";
         else
             return String.valueOf(v);
+    }
+//
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//        Muzyka.play(this, R.raw.gra);
+//    }
+//
+//    @Override
+//    protected void onPause(){
+//        super.onPause();
+//        Muzyka.stop(this);
+//    }
+
+    private static final String pref_puzzle = "puzzle";
+    protected static final int trudnosc_kontynuacji = -1;
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d(ZNACZNIK, "onPause");
+        Muzyka.stop(this);
+
+        getPreferences(MODE_PRIVATE).edit().putString(pref_puzzle,doZnakowPuzzle(puzzle)).commit();
     }
 }
